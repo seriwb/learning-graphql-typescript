@@ -10,6 +10,6 @@ WORKDIR /photo-share-api
 
 COPY . .
 
-RUN yarn
+RUN yarn && yarn build
 
 # CMD ["yarn", "start"]

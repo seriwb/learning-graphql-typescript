@@ -13,6 +13,7 @@ services:
       - ./photo-share-api/.env
     volumes:
       - ./photo-share-api:/photo-share-api:cached
+      - yarn-cache:/usr/local/share/.cache/yarn/v6
     ports:
       - "4000:4000"
     networks:
@@ -55,3 +56,4 @@ volumes:
     external: false
   mongo-configdb-volume:
     external: false
+  yarn-cache:
