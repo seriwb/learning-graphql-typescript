@@ -1,0 +1,57 @@
+version: '3.8'
+services:
+  # --------------------- Original Applications ---------------------
+  photo-share-api:
+    build:
+      context: ./photo-share-api
+    image: learning-graphql-05/photo-share-api
+    container_name: learning-graphql-05_photo-share-api
+    command: bash
+    tty: true
+    working_dir: "/photo-share-api"
+    env_file:
+      - ./photo-share-api/.env
+    volumes:
+      - ./photo-share-api:/photo-share-api:cached
+    ports:
+      - "4000:4000"
+    networks:
+      - learning-graphql-network
+
+  mongo:
+    image: mongo:3.6
+    container_name: learning-graphql-05_mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongo_password
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-db-volume:/data/db
+      - mongo-configdb-volume:/data/configdb
+    networks:
+      - learning-graphql-network
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: learning-graphql-05_mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongo_password
+    networks:
+      - learning-graphql-network
+    depends_on:
+      - mongo
+
+networks:
+  learning-graphql-network:
+
+volumes:
+  mongo-db-volume:
+    external: false
+  mongo-configdb-volume:
+    external: false
